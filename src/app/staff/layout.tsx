@@ -6,13 +6,19 @@ export default function StaffLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex h-screen w-full bg-slate-50 overflow-hidden">
-      <Sidebar role="Staff" />
-      <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-        <div className="mx-auto max-w-6xl">
-          {children}
-        </div>
-      </main>
+    <div 
+      className="flex h-screen w-full overflow-hidden bg-cover bg-center bg-no-repeat relative"
+      style={{ backgroundImage: 'url("/backgrounds/bg-abstract.webp")' }}
+    >
+      <div className="absolute inset-0 bg-slate-900/10 z-0"></div>
+      <div className="relative z-10 flex h-full w-full">
+        <Sidebar role="Staff" />
+        <main className="flex-1 overflow-y-auto p-6 lg:p-8 bg-white/95 backdrop-blur-md shadow-2xl relative">
+          <div className="mx-auto max-w-6xl">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   )
 }

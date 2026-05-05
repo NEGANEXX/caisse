@@ -52,11 +52,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 p-4">
-      <div className="w-full max-w-md">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center bg-no-repeat relative"
+      style={{ backgroundImage: 'url("/backgrounds/bg-hotel.jpg")' }}
+    >
+      <div className="absolute inset-0 bg-slate-900/70 z-0 backdrop-blur-[2px]"></div>
+      <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8 flex flex-col items-center">
           <img src="/Agafay-luxury-camp-w-120x40.webp" alt="Agafay Luxury Camp Logo" className="h-16 w-auto object-contain mb-4" />
-          <p className="text-slate-400">Caisse Dashboard</p>
+          <p className="text-slate-300 font-medium tracking-wide">Caisse Dashboard</p>
         </div>
         <NumericKeypad onSubmit={handleLogin} loading={loading} error={error} />
       </div>
