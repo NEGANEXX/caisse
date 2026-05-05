@@ -21,6 +21,7 @@ export default function CashRapportPage() {
   const [totals, setTotals] = useState({ MAD: 0, USD: 0, EUR: 0 })
   const [breakdowns, setBreakdowns] = useState({ MAD: {}, USD: {}, EUR: {} })
   const [proofImage, setProofImage] = useState<File | null>(null)
+  const [actualProofImage, setActualProofImage] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -41,6 +42,10 @@ export default function CashRapportPage() {
       setMessage("Please upload a picture of the system report.")
       return
     }
+    if (!actualProofImage) {
+      setMessage("Please upload a picture of the actual physical cash.")
+      return
+    }
 
     setLoading(true)
     setMessage("")
@@ -50,9 +55,9 @@ export default function CashRapportPage() {
       const staffId = document.cookie.split('; ').find(row => row.startsWith('auth_id='))?.split('=')[1]
       const reportDate = new Date().toISOString().split('T')[0]
       
-      // Upload proof image
+      // Upload system proof image
       const fileExt = proofImage.name.split('.').pop()
-      const fileName = `${reportDate}_cash_${Math.random()}.${fileExt}`
+      const fileName = `${reportDate}_cash_system_${Math.random()}.${fileExt}`
       const filePath = `${staffId}/${fileName}`
 
       const { error: uploadError } = await supabase.storage
@@ -61,9 +66,24 @@ export default function CashRapportPage() {
 
       if (uploadError) throw uploadError
 
-      const { data: { publicUrl } } = supabase.storage
+      const { data: { publicUrl: systemUrl } } = supabase.storage
         .from('receipts')
         .getPublicUrl(filePath)
+
+      // Upload actual cash proof image
+      const actualFileExt = actualProofImage.name.split('.').pop()
+      const actualFileName = `${reportDate}_cash_actual_${Math.random()}.${actualFileExt}`
+      const actualFilePath = `${staffId}/${actualFileName}`
+
+      const { error: actualUploadError } = await supabase.storage
+        .from('receipts')
+        .upload(actualFilePath, actualProofImage)
+
+      if (actualUploadError) throw actualUploadError
+
+      const { data: { publicUrl: actualUrl } } = supabase.storage
+        .from('receipts')
+        .getPublicUrl(actualFilePath)
 
       const { error } = await supabase.from('cash_reports').insert({
         report_date: reportDate,
@@ -74,13 +94,15 @@ export default function CashRapportPage() {
         breakdown_mad: breakdowns.MAD,
         breakdown_usd: breakdowns.USD,
         breakdown_eur: breakdowns.EUR,
-        system_report_image_url: publicUrl
+        system_report_image_url: systemUrl,
+        actual_report_image_url: actualUrl
       })
 
       if (error) throw error
       setMessage("Cash report saved successfully!")
       setSystemAmount("")
       setProofImage(null)
+      setActualProofImage(null)
 
     } catch (error: any) {
       console.error(error)
@@ -142,12 +164,21 @@ export default function CashRapportPage() {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-        <ImageUpload 
-          onImageSelected={setProofImage} 
-          label="System Report Proof" 
-          description="Take a photo of the cash system report from the POS."
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+          <ImageUpload 
+            onImageSelected={setProofImage} 
+            label="System Report Proof" 
+            description="Take a photo of the cash system report from the POS."
+          />
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+          <ImageUpload 
+            onImageSelected={setActualProofImage} 
+            label="Physical Cash Proof" 
+            description="Take a photo of the physical cash counted."
+          />
+        </div>
       </div>
 
       <div className="space-y-6">

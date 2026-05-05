@@ -10,6 +10,7 @@ export default function TpeRapportPage() {
   const [actualAmount, setActualAmount] = useState("")
   const [tips, setTips] = useState("")
   const [proofImage, setProofImage] = useState<File | null>(null)
+  const [actualProofImage, setActualProofImage] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -31,6 +32,10 @@ export default function TpeRapportPage() {
       setMessage("Please upload a picture of the system report.")
       return
     }
+    if (!actualProofImage) {
+      setMessage("Please upload a picture of the actual TPE ticket.")
+      return
+    }
 
     setLoading(true)
     setMessage("")
@@ -39,9 +44,9 @@ export default function TpeRapportPage() {
       const staffId = document.cookie.split('; ').find(row => row.startsWith('auth_id='))?.split('=')[1]
       const reportDate = new Date().toISOString().split('T')[0]
       
-      // Upload proof image
+      // Upload system proof image
       const fileExt = proofImage.name.split('.').pop()
-      const fileName = `${reportDate}_tpe_${Math.random()}.${fileExt}`
+      const fileName = `${reportDate}_tpe_system_${Math.random()}.${fileExt}`
       const filePath = `${staffId}/${fileName}`
 
       const { error: uploadError } = await supabase.storage
@@ -50,9 +55,24 @@ export default function TpeRapportPage() {
 
       if (uploadError) throw uploadError
 
-      const { data: { publicUrl } } = supabase.storage
+      const { data: { publicUrl: systemUrl } } = supabase.storage
         .from('receipts')
         .getPublicUrl(filePath)
+
+      // Upload actual TPE ticket image
+      const actualFileExt = actualProofImage.name.split('.').pop()
+      const actualFileName = `${reportDate}_tpe_actual_${Math.random()}.${actualFileExt}`
+      const actualFilePath = `${staffId}/${actualFileName}`
+
+      const { error: actualUploadError } = await supabase.storage
+        .from('receipts')
+        .upload(actualFilePath, actualProofImage)
+
+      if (actualUploadError) throw actualUploadError
+
+      const { data: { publicUrl: actualUrl } } = supabase.storage
+        .from('receipts')
+        .getPublicUrl(actualFilePath)
 
       const { error } = await supabase.from('tpe_reports').insert({
         report_date: reportDate,
@@ -61,7 +81,8 @@ export default function TpeRapportPage() {
         actual_amount: parsedActual,
         tips: parsedTips,
         difference: difference,
-        system_report_image_url: publicUrl
+        system_report_image_url: systemUrl,
+        actual_report_image_url: actualUrl
       })
 
       if (error) throw error
@@ -70,6 +91,7 @@ export default function TpeRapportPage() {
       setActualAmount("")
       setTips("")
       setProofImage(null)
+      setActualProofImage(null)
     } catch (error: any) {
       console.error(error)
       setMessage("Error saving report: " + error.message)
@@ -139,12 +161,21 @@ export default function TpeRapportPage() {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-        <ImageUpload 
-          onImageSelected={setProofImage} 
-          label="System Report Proof" 
-          description="Take a photo of the TPE terminal closing receipt."
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+          <ImageUpload 
+            onImageSelected={setProofImage} 
+            label="System Report Proof" 
+            description="Take a photo of the TPE terminal closing receipt."
+          />
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+          <ImageUpload 
+            onImageSelected={setActualProofImage} 
+            label="Physical Ticket Proof" 
+            description="Take a photo of the actual physical TPE tickets (optional if 1 batch)."
+          />
+        </div>
       </div>
 
       {/* Difference Banner */}
