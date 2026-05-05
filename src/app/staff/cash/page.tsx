@@ -39,11 +39,11 @@ export default function CashRapportPage() {
       return
     }
     if (!proofImage) {
-      setMessage("Please upload a picture of the system report.")
+      setMessage("Please upload a picture of the Restaurant system report.")
       return
     }
     if (!actualProofImage) {
-      setMessage("Please upload a picture of the actual physical cash.")
+      setMessage("Please upload a picture of the Snack system report.")
       return
     }
 
@@ -168,15 +168,15 @@ export default function CashRapportPage() {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <ImageUpload 
             onImageSelected={setProofImage} 
-            label="System Report Proof" 
-            description="Take a photo of the cash system report from the POS."
+            label="Restaurant System Proof" 
+            description="Take a photo of the cash system report from the Restaurant POS."
           />
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <ImageUpload 
             onImageSelected={setActualProofImage} 
-            label="Physical Cash Proof" 
-            description="Take a photo of the physical cash counted."
+            label="Snack System Proof" 
+            description="Take a photo of the cash system report from the Snack POS."
           />
         </div>
       </div>

@@ -29,11 +29,11 @@ export default function TpeRapportPage() {
       return
     }
     if (!proofImage) {
-      setMessage("Please upload a picture of the system report.")
+      setMessage("Please upload a picture of the Restaurant system report.")
       return
     }
     if (!actualProofImage) {
-      setMessage("Please upload a picture of the actual TPE ticket.")
+      setMessage("Please upload a picture of the Snack system report.")
       return
     }
 
@@ -165,15 +165,15 @@ export default function TpeRapportPage() {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <ImageUpload 
             onImageSelected={setProofImage} 
-            label="System Report Proof" 
-            description="Take a photo of the TPE terminal closing receipt."
+            label="Restaurant System Proof" 
+            description="Take a photo of the TPE terminal closing receipt for the Restaurant."
           />
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <ImageUpload 
             onImageSelected={setActualProofImage} 
-            label="Physical Ticket Proof" 
-            description="Take a photo of the actual physical TPE tickets (optional if 1 batch)."
+            label="Snack System Proof" 
+            description="Take a photo of the TPE terminal closing receipt for the Snack."
           />
         </div>
       </div>
