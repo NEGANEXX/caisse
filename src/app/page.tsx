@@ -54,9 +54,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900 p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">eZee POS</h1>
-          <p className="text-slate-400">Agafay Luxury Camp Dashboard</p>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <img src="/Agafay-luxury-camp-w-120x40.webp" alt="Agafay Luxury Camp Logo" className="h-16 w-auto object-contain mb-4" />
+          <p className="text-slate-400">Caisse Dashboard</p>
         </div>
         <NumericKeypad onSubmit={handleLogin} loading={loading} error={error} />
       </div>
