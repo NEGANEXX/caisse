@@ -67,13 +67,13 @@ export function CurrencyGrid({ title, symbol, denominations, onChange }: Currenc
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+    <div className="bg-white p-3 sm:p-6 rounded-xl shadow-sm border border-slate-200">
       <h3 className="text-lg font-bold text-slate-800 mb-4">{title} ({symbol})</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
         {denominations.map((val) => {
           const style = getCurrencyStyle(symbol, val)
           return (
-          <div key={val} className="flex flex-col space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 hover:shadow-md transition-shadow">
+          <div key={val} className="flex flex-col space-y-2 sm:space-y-3 bg-slate-50 p-2 sm:p-4 rounded-xl border border-slate-200 hover:shadow-md transition-shadow">
             <div className={style.isCoin ? "h-24 flex items-center justify-center" : ""}>
               <div className={style.classes}>
                 {style.imageUrl ? (

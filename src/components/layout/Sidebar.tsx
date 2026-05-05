@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Calculator, CreditCard, Gift, FileArchive, LogOut, LayoutDashboard, Users, FileText, Settings } from "lucide-react"
+import { Calculator, CreditCard, Gift, FileArchive, LogOut, LayoutDashboard, Users, FileText, Settings, X } from "lucide-react"
 import { supabase } from "@/lib/supabase/client"
 
 const staffNavigation = [
@@ -20,7 +20,15 @@ const managerNavigation = [
   { name: "Logs", href: "/manager/logs", icon: FileText },
 ]
 
-export function Sidebar({ role }: { role: "Staff" | "Manager" }) {
+export function Sidebar({ 
+  role, 
+  isOpen, 
+  onClose 
+}: { 
+  role: "Staff" | "Manager",
+  isOpen?: boolean,
+  onClose?: () => void
+}) {
   const pathname = usePathname()
   const navigation = role === "Staff" ? staffNavigation : managerNavigation
   const [pendingRequests, setPendingRequests] = useState(0)
@@ -57,16 +65,32 @@ export function Sidebar({ role }: { role: "Staff" | "Manager" }) {
   }, [role])
 
   return (
-    <div className="flex h-full w-64 flex-col bg-slate-900 text-slate-300">
-      <div className="flex h-20 items-center justify-center flex-col px-4 pt-4 pb-2 border-b border-slate-800">
-        <div className="flex items-center space-x-2">
-          <img src="/Agafay-luxury-camp-w-120x40.webp" alt="Agafay Logo" className="h-10 w-auto object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
-          <div className="flex flex-col">
-            <span className="font-bold text-white text-lg tracking-tight leading-tight">AGAFAY</span>
-            <span className="font-medium text-primary text-xs tracking-wider">Caisse Rapport</span>
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-slate-900/80 backdrop-blur-sm lg:hidden" 
+          onClick={onClose}
+        />
+      )}
+
+      <div className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-slate-900 text-slate-300 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}>
+        <div className="flex h-20 items-center justify-between px-4 pt-4 pb-2 border-b border-slate-800">
+          <div className="flex items-center space-x-2">
+            <img src="/Agafay-luxury-camp-w-120x40.webp" alt="Agafay Logo" className="h-10 w-auto object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+            <div className="flex flex-col">
+              <span className="font-bold text-white text-lg tracking-tight leading-tight">AGAFAY</span>
+              <span className="font-medium text-primary text-xs tracking-wider">Caisse Rapport</span>
+            </div>
           </div>
+          {onClose && (
+            <button onClick={onClose} className="lg:hidden p-2 text-slate-400 hover:text-white">
+              <X className="h-6 w-6" />
+            </button>
+          )}
         </div>
-      </div>
       <div className="flex-1 overflow-y-auto py-4">
         <nav className="space-y-1 px-3">
           {navigation.map((item) => {
@@ -123,6 +147,7 @@ export function Sidebar({ role }: { role: "Staff" | "Manager" }) {
           Logout
         </Link>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
