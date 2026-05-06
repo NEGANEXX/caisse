@@ -24,6 +24,7 @@ export default function CashRapportPage() {
   const [actualProofImage, setActualProofImage] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
+  const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0])
 
   const actualAmountMAD = totals.MAD + (totals.USD * RATES.USD_TO_MAD) + (totals.EUR * RATES.EUR_TO_MAD)
   const difference = actualAmountMAD - (parseFloat(systemAmount) || 0)
@@ -53,7 +54,6 @@ export default function CashRapportPage() {
     try {
       // In a real app, you get this from your auth state/cookie
       const staffId = document.cookie.split('; ').find(row => row.startsWith('auth_id='))?.split('=')[1]
-      const reportDate = new Date().toISOString().split('T')[0]
       
       // Upload system proof image
       const fileExt = proofImage.name.split('.').pop()
@@ -114,19 +114,27 @@ export default function CashRapportPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-4 gap-4 flex-wrap">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Cash Rapport</h1>
           <p className="text-slate-500 mt-1">Calculate and verify the daily cash register.</p>
         </div>
-        <button 
-          onClick={handleSave}
-          disabled={loading}
-          className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded-lg shadow hover:bg-primary/90 disabled:opacity-50"
-        >
-          <Save className="w-5 h-5 mr-2" />
-          {loading ? "Saving..." : "Save Report"}
-        </button>
+        <div className="flex items-center space-x-4">
+          <input 
+            type="date" 
+            value={reportDate}
+            onChange={(e) => setReportDate(e.target.value)}
+            className="px-3 py-2 border border-slate-300 rounded-lg text-slate-700 font-medium outline-none focus:ring-2 focus:ring-primary"
+          />
+          <button 
+            onClick={handleSave}
+            disabled={loading}
+            className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded-lg shadow hover:bg-primary/90 disabled:opacity-50"
+          >
+            <Save className="w-5 h-5 mr-2" />
+            {loading ? "Saving..." : "Save Report"}
+          </button>
+        </div>
       </div>
 
       {message && (

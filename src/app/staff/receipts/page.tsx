@@ -9,6 +9,7 @@ export default function ZipReceiptsPage() {
   const [files, setFiles] = useState<File[]>([])
   const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState("")
+  const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -31,7 +32,6 @@ export default function ZipReceiptsPage() {
 
     try {
       const staffId = document.cookie.split('; ').find(row => row.startsWith('auth_id='))?.split('=')[1]
-      const reportDate = new Date().toISOString().split('T')[0]
 
       for (const file of files) {
         let fileToUpload = file
@@ -88,9 +88,19 @@ export default function ZipReceiptsPage() {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Upload Receipts</h1>
-        <p className="text-slate-500 mt-1">Upload pictures of tickets and slips for the Manager to ZIP.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Upload Receipts</h1>
+          <p className="text-slate-500 mt-1">Upload pictures of tickets and slips for the Manager to ZIP.</p>
+        </div>
+        <div className="flex items-center space-x-4">
+          <input 
+            type="date" 
+            value={reportDate}
+            onChange={(e) => setReportDate(e.target.value)}
+            className="px-3 py-2 border border-slate-300 rounded-lg text-slate-700 font-medium outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
       </div>
 
       {message && (

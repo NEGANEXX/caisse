@@ -8,6 +8,7 @@ import { Save } from "lucide-react"
 export default function GratuitePage() {
   const [tableInfo, setTableInfo] = useState("")
   const [justification, setJustification] = useState("")
+  const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0])
   
   const [tentNumber, setTentNumber] = useState("")
   const [boardType, setBoardType] = useState("Demi Pension")
@@ -34,7 +35,6 @@ export default function GratuitePage() {
     setMessageG("")
     try {
       const staffId = document.cookie.split('; ').find(row => row.startsWith('auth_id='))?.split('=')[1]
-      const reportDate = new Date().toISOString().split('T')[0]
       
       const fileExt = proofImageG.name.split('.').pop()
       const fileName = `${reportDate}_gratuite_${Math.random()}.${fileExt}`
@@ -78,7 +78,6 @@ export default function GratuitePage() {
     setMessageD("")
     try {
       const staffId = document.cookie.split('; ').find(row => row.startsWith('auth_id='))?.split('=')[1]
-      const reportDate = new Date().toISOString().split('T')[0]
       
       const fileExt = proofImageD.name.split('.').pop()
       const fileName = `${reportDate}_dppc_${Math.random()}.${fileExt}`
@@ -109,9 +108,19 @@ export default function GratuitePage() {
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Gratuité, DP & PC</h1>
-        <p className="text-slate-500 mt-1">Log free tables and track half/full board tents.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Gratuité, DP & PC</h1>
+          <p className="text-slate-500 mt-1">Log free tables and track half/full board tents.</p>
+        </div>
+        <div className="flex items-center space-x-4">
+          <input 
+            type="date" 
+            value={reportDate}
+            onChange={(e) => setReportDate(e.target.value)}
+            className="px-3 py-2 border border-slate-300 rounded-lg text-slate-700 font-medium outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
       </div>
 
       {/* Gratuite Section */}
