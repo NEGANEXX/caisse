@@ -13,7 +13,7 @@ const EUR_DENOMINATIONS = [500, 200, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.2, 0.1]
 // Exchange rates for calculation (placeholder - should be dynamic in prod)
 const RATES = {
   USD_TO_MAD: 9,
-  EUR_TO_MAD: 11
+  EUR_TO_MAD: 10
 }
 
 export default function CashRapportPage() {
