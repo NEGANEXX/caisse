@@ -104,9 +104,19 @@ export default function ManagerTipsPage() {
                         {new Date(report.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
-                    <div className="mt-4">
-                      <p className="text-sm text-slate-500">Amount</p>
-                      <p className="text-xl font-bold text-slate-800">{Number(report.amount).toFixed(2)} MAD</p>
+                    <div className="mt-4 grid grid-cols-3 gap-4">
+                      <div>
+                        <p className="text-sm text-slate-500">Amount</p>
+                        <p className="text-xl font-bold text-slate-800">{Number(report.amount).toFixed(2)} MAD</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-500">Table Info</p>
+                        <p className="text-md font-medium text-slate-800">{report.table_info}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-slate-500">Beneficiary</p>
+                        <p className="text-md font-medium text-slate-800">{report.beneficiary}</p>
+                      </div>
                     </div>
                   </div>
                   

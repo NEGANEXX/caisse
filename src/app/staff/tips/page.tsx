@@ -7,14 +7,16 @@ import { Save } from "lucide-react"
 
 export default function TipsPage() {
   const [amount, setAmount] = useState("")
+  const [tableInfo, setTableInfo] = useState("")
+  const [beneficiary, setBeneficiary] = useState("")
   const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0])
   const [proofImage, setProofImage] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
 
   const handleSave = async () => {
-    if (!amount) {
-      setMessage("Please enter the tips amount.")
+    if (!amount || !tableInfo || !beneficiary) {
+      setMessage("Please fill all text fields (amount, table info, and beneficiary).")
       return
     }
     if (!proofImage) {
@@ -39,6 +41,8 @@ export default function TipsPage() {
       const { error } = await supabase.from('tips_reports').insert({
         report_date: reportDate,
         staff_id: staffId,
+        table_info: tableInfo,
+        beneficiary: beneficiary,
         amount: parseFloat(amount),
         proof_image_url: publicUrl
       })
@@ -46,6 +50,8 @@ export default function TipsPage() {
       
       setMessage("Tips saved successfully!")
       setAmount("")
+      setTableInfo("")
+      setBeneficiary("")
       setProofImage(null)
     } catch (error: any) {
       setMessage("Error: " + error.message)
@@ -90,15 +96,37 @@ export default function TipsPage() {
           </div>
         )}
 
-        <div className="mb-6">
-          <label className="block text-sm font-bold text-slate-700 mb-2">Total Amount (MAD)</label>
-          <input 
-            type="number" 
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="0.00"
-            className="w-full md:w-1/2 p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-xl font-bold"
-          />
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2">Total Amount (MAD)</label>
+            <input 
+              type="number" 
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="0.00"
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-xl font-bold"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2">Table Info / N°</label>
+            <input 
+              type="text" 
+              value={tableInfo}
+              onChange={(e) => setTableInfo(e.target.value)}
+              placeholder="e.g. Table 4"
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-lg"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2">Beneficiary</label>
+            <input 
+              type="text" 
+              value={beneficiary}
+              onChange={(e) => setBeneficiary(e.target.value)}
+              placeholder="e.g. Youssef / Team"
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-lg"
+            />
+          </div>
         </div>
 
         <div className="mt-6 pt-6 border-t border-slate-100">

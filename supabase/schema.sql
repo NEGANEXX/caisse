@@ -68,6 +68,8 @@ CREATE TABLE IF NOT EXISTS tips_reports (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
   report_date DATE NOT NULL,
   staff_id UUID REFERENCES users(id),
+  table_info TEXT NOT NULL,
+  beneficiary TEXT NOT NULL,
   amount NUMERIC NOT NULL,
   proof_image_url TEXT
 );
