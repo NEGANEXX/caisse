@@ -43,9 +43,20 @@ function CashReportItem({ r }: { r: any }) {
       
       <div className="flex gap-4">
         {r.system_report_image_url && (
-          <a href={r.system_report_image_url} target="_blank" rel="noopener noreferrer" className="shrink-0 block w-20 h-20 rounded-lg overflow-hidden border border-slate-200 hover:opacity-80 transition-opacity">
-            <img src={r.system_report_image_url} alt="System Report" className="w-full h-full object-cover" />
-          </a>
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[10px] font-bold text-slate-500 uppercase">Restaurant</span>
+            <a href={r.system_report_image_url} target="_blank" rel="noopener noreferrer" className="shrink-0 block w-20 h-20 rounded-lg overflow-hidden border border-slate-200 hover:opacity-80 transition-opacity">
+              <img src={r.system_report_image_url} alt="Restaurant Report" className="w-full h-full object-cover" />
+            </a>
+          </div>
+        )}
+        {r.actual_report_image_url && (
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[10px] font-bold text-slate-500 uppercase">Snack</span>
+            <a href={r.actual_report_image_url} target="_blank" rel="noopener noreferrer" className="shrink-0 block w-20 h-20 rounded-lg overflow-hidden border border-slate-200 hover:opacity-80 transition-opacity">
+              <img src={r.actual_report_image_url} alt="Snack Report" className="w-full h-full object-cover" />
+            </a>
+          </div>
         )}
         <div className="flex-1 flex flex-col justify-end items-end">
           <button 
@@ -220,11 +231,24 @@ export default function ManagerDashboard() {
                       <span>System: {r.system_amount} | Tips: {r.tips}</span>
                       <span className="font-medium text-slate-900">Actual: {r.actual_amount}</span>
                     </div>
-                    {r.system_report_image_url && (
-                      <a href={r.system_report_image_url} target="_blank" rel="noopener noreferrer" className="block w-24 h-24 rounded-lg overflow-hidden border border-slate-200 hover:opacity-80 transition-opacity">
-                        <img src={r.system_report_image_url} alt="TPE Report" className="w-full h-full object-cover" />
-                      </a>
-                    )}
+                    <div className="flex gap-4">
+                      {r.system_report_image_url && (
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="text-[10px] font-bold text-slate-500 uppercase">Restaurant</span>
+                          <a href={r.system_report_image_url} target="_blank" rel="noopener noreferrer" className="block w-24 h-24 rounded-lg overflow-hidden border border-slate-200 hover:opacity-80 transition-opacity">
+                            <img src={r.system_report_image_url} alt="TPE Restaurant Report" className="w-full h-full object-cover" />
+                          </a>
+                        </div>
+                      )}
+                      {r.actual_report_image_url && (
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="text-[10px] font-bold text-slate-500 uppercase">Snack</span>
+                          <a href={r.actual_report_image_url} target="_blank" rel="noopener noreferrer" className="block w-24 h-24 rounded-lg overflow-hidden border border-slate-200 hover:opacity-80 transition-opacity">
+                            <img src={r.actual_report_image_url} alt="TPE Snack Report" className="w-full h-full object-cover" />
+                          </a>
+                        </div>
+                      )}
+                    </div>
                   </li>
                 ))}
                 {reports.tpe.length === 0 && <li className="p-6 text-slate-400 text-center">No reports</li>}

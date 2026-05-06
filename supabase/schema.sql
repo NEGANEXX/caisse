@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS cash_reports (
   breakdown_mad JSONB DEFAULT '{}'::jsonb,
   breakdown_usd JSONB DEFAULT '{}'::jsonb,
   breakdown_eur JSONB DEFAULT '{}'::jsonb,
-  system_report_image_url TEXT
+  system_report_image_url TEXT,
+  actual_report_image_url TEXT
 );
 
 -- TPE Reports
@@ -35,7 +36,8 @@ CREATE TABLE IF NOT EXISTS tpe_reports (
   actual_amount NUMERIC NOT NULL,
   tips NUMERIC NOT NULL DEFAULT 0,
   difference NUMERIC NOT NULL,
-  system_report_image_url TEXT
+  system_report_image_url TEXT,
+  actual_report_image_url TEXT
 );
 
 -- Gratuite Reports
