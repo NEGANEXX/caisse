@@ -3,19 +3,21 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Calculator, CreditCard, Gift, FileArchive, LogOut, LayoutDashboard, Users, FileText, Settings, X } from "lucide-react"
+import { Calculator, CreditCard, Gift, FileArchive, LogOut, LayoutDashboard, Users, FileText, Settings, X, Coins } from "lucide-react"
 import { supabase } from "@/lib/supabase/client"
 
 const staffNavigation = [
   { name: "Cash Rapport", href: "/staff/cash", icon: Calculator },
   { name: "TPE Rapport", href: "/staff/tpe", icon: CreditCard },
   { name: "Gratuité / DP / PC", href: "/staff/gratuite", icon: Gift },
+  { name: "Tips Rapport", href: "/staff/tips", icon: Coins },
   { name: "ZIP Receipts", href: "/staff/receipts", icon: FileArchive },
   { name: "Settings", href: "/staff/settings", icon: Settings },
 ]
 
 const managerNavigation = [
   { name: "Dashboard", href: "/manager", icon: LayoutDashboard },
+  { name: "Tips Reports", href: "/manager/tips", icon: Coins },
   { name: "Users", href: "/manager/users", icon: Users },
   { name: "Logs", href: "/manager/logs", icon: FileText },
 ]

@@ -62,6 +62,16 @@ CREATE TABLE IF NOT EXISTS dp_pc_reports (
   proof_image_url TEXT
 );
 
+-- Tips Reports
+CREATE TABLE IF NOT EXISTS tips_reports (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  report_date DATE NOT NULL,
+  staff_id UUID REFERENCES users(id),
+  amount NUMERIC NOT NULL,
+  proof_image_url TEXT
+);
+
 -- Receipts table
 CREATE TABLE IF NOT EXISTS receipt_images (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -79,6 +89,7 @@ ALTER TABLE tpe_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gratuite_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE dp_pc_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE receipt_images ENABLE ROW LEVEL SECURITY;
+ALTER TABLE tips_reports ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Allow all actions for everyone" ON users FOR ALL USING (true);
 CREATE POLICY "Allow all actions for everyone" ON cash_reports FOR ALL USING (true);
@@ -86,6 +97,7 @@ CREATE POLICY "Allow all actions for everyone" ON tpe_reports FOR ALL USING (tru
 CREATE POLICY "Allow all actions for everyone" ON gratuite_reports FOR ALL USING (true);
 CREATE POLICY "Allow all actions for everyone" ON dp_pc_reports FOR ALL USING (true);
 CREATE POLICY "Allow all actions for everyone" ON receipt_images FOR ALL USING (true);
+CREATE POLICY "Allow all actions for everyone" ON tips_reports FOR ALL USING (true);
 
 -- Create a public bucket for receipts
 INSERT INTO storage.buckets (id, name, public) 
