@@ -200,12 +200,14 @@ export default function CashRapportPage() {
           title="US Dollar" 
           symbol="USD" 
           denominations={USD_DENOMINATIONS} 
+          rate={RATES.USD_TO_MAD}
           onChange={handleCurrencyChange("USD")} 
         />
         <CurrencyGrid 
           title="Euro" 
           symbol="EUR" 
           denominations={EUR_DENOMINATIONS} 
+          rate={RATES.EUR_TO_MAD}
           onChange={handleCurrencyChange("EUR")} 
         />
       </div>

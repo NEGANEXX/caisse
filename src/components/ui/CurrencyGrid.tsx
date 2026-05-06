@@ -12,10 +12,11 @@ interface CurrencyGridProps {
   title: string
   symbol: string
   denominations: number[]
+  rate?: number
   onChange: (total: number, breakdown: Record<string, number>) => void
 }
 
-export function CurrencyGrid({ title, symbol, denominations, onChange }: CurrencyGridProps) {
+export function CurrencyGrid({ title, symbol, denominations, rate, onChange }: CurrencyGridProps) {
   const [counts, setCounts] = useState<Record<string, number>>(
     denominations.reduce((acc, curr) => ({ ...acc, [curr.toString()]: 0 }), {})
   )
@@ -98,7 +99,7 @@ export function CurrencyGrid({ title, symbol, denominations, onChange }: Currenc
               />
             </div>
             <div className="text-right text-xs font-bold text-slate-500">
-              = {(val * (counts[val.toString()] || 0)).toFixed(2)}
+              = {(val * (counts[val.toString()] || 0) * (rate || 1)).toFixed(2)} {rate ? 'MAD' : symbol}
             </div>
           </div>
           )
