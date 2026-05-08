@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Lock, Grip, Delete } from "lucide-react"
+import { Grip, Delete } from "lucide-react"
 
 interface NumericKeypadProps {
   onSubmit: (pin: string) => void
@@ -42,10 +42,7 @@ export function NumericKeypad({ onSubmit, loading, error }: NumericKeypadProps) 
     <div className="w-full max-w-sm mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl">
       <div className="pt-10 pb-6 px-6 bg-white flex flex-col items-center">
         {/* Top Icons */}
-        <div className="flex space-x-4 mb-10">
-          <div className="w-14 h-14 rounded-full border-2 border-slate-100 flex items-center justify-center text-slate-400">
-            <Lock className="w-6 h-6 stroke-[1.5]" />
-          </div>
+        <div className="flex justify-center mb-10">
           <div className="w-14 h-14 rounded-full border-2 border-teal-500 flex items-center justify-center text-teal-500">
             <Grip className="w-6 h-6" />
           </div>
